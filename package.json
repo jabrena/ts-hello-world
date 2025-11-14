@@ -2,6 +2,7 @@
   "name": "hello-ts",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "out/helloworld.js",
   "scripts": {
     "tsc": "tsc"
@@ -10,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^4.5.2"
+    "@types/node": "^24.10.1",
+    "typescript": "^5.6.0"
   }
 }
