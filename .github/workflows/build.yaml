@@ -32,8 +32,8 @@ jobs:
           echo "Build failed: out directory not found"
           exit 1
         fi
-        if [ ! -f "out/helloworld.js" ]; then
-          echo "Build failed: helloworld.js not found"
+        if [ ! -f "out/hello-world.js" ]; then
+          echo "Build failed: hello-world.js not found"
           exit 1
         fi
         echo "Build successful!"

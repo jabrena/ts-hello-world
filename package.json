@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "out/helloworld.js",
+  "main": "out/hello-world.js",
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "test": "tsx hello-agent.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@cursor-ai/january": "^0.2.0",
+    "tsx": "^4.20.6"
+  },
   "devDependencies": {
     "@types/node": "^24.10.1",
     "typescript": "^5.6.0"
