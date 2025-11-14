@@ -37,3 +37,6 @@ jobs:
           exit 1
         fi
         echo "Build successful!"
+    
+    - name: Run hello-world example
+      run: node out/hello-world.js
