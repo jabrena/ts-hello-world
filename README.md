@@ -8,6 +8,7 @@ Simple hello world project for running TypeScript with Node.js
 npm install -g typescript
 npm install
 npm test
+npm run tsc 
 node out/helloworld.js
 ```
 
