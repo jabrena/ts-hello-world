@@ -1,0 +1,253 @@
+syntax = "proto3";
+
+package agent.v1;
+
+service AgentService {
+  rpc Run(stream AgentClientMessage) returns (stream AgentServerMessage);
+}
+
+// --- Request Messages ---
+
+message AgentClientMessage {
+  AgentRunRequest run_request = 1;
+  ExecClientMessage exec_client_message = 2;
+  KvClientMessage kv_client_message = 3;
+  ConversationAction conversation_action = 4;
+  ExecClientControlMessage exec_client_control_message = 5;
+}
+
+message AgentRunRequest {
+  ConversationStateStructure conversation_state = 1;
+  ConversationAction action = 2;
+  ModelDetails model_details = 3;
+  McpTools mcp_tools = 4;
+  string conversation_id = 5;
+}
+
+message ExecClientMessage {
+  string id = 1;
+  ShellResult shell_result = 2;
+  bool write_result_bool = 3;
+  DeleteResult delete_result = 4;
+  GrepResult grep_result = 5;
+  ReadResult read_result = 7;
+  LsResult ls_result = 8;
+  DiagnosticsResult diagnostics_result = 9;
+  RequestContextResult request_context_result = 10;
+  McpResult mcp_result = 11;
+  ShellStream shell_stream = 14;
+  string exec_id = 15;
+  BackgroundShellSpawnResult background_shell_spawn_result = 16;
+  ContextHeader context_header = 19;
+}
+
+message RequestContextResult {
+  RequestContextSuccess success = 1;
+}
+
+message RequestContextSuccess {
+  RequestContext request_context = 1;
+}
+
+message RequestContext {
+  string workspace_path = 1;
+  RequestContextEnv env = 2;
+  string shared_notes_listing = 3;
+  repeated GitRepo git_repos = 4;
+  repeated ProjectLayout project_layouts = 5;
+}
+
+message RequestContextEnv {
+  string os_version = 1;
+  repeated string workspace_paths = 2;
+  string shell = 3;
+  string terminals_folder = 4;
+  string agent_shared_notes_folder = 5;
+}
+
+message GitRepo {
+  string path = 1;
+  string status = 2;
+}
+
+message ProjectLayout {
+  string abs_path = 1;
+  repeated ProjectLayout children_dirs = 2;
+  repeated FileEntry children_files = 3;
+  bool children_were_processed = 4;
+}
+
+message FileEntry {
+  string name = 1;
+}
+
+message ExecClientControlMessage {
+  ExecClientStreamClose stream_close = 1;
+  ExecClientThrow throw = 2;
+}
+
+message KvClientMessage {
+  string id = 1;
+  GetBlobResult get_blob_result = 2;
+  SetBlobResult set_blob_result = 3;
+}
+
+message ConversationAction {
+  UserMessageAction user_message_action = 1;
+  ResumeAction resume_action = 2;
+  CancelAction cancel_action = 3;
+  SummarizeAction summarize_action = 4;
+  ShellCommandAction shell_command_action = 5;
+  StartPlanAction start_plan_action = 6;
+  ExecutePlanAction execute_plan_action = 7;
+}
+
+// --- Response Messages ---
+
+message AgentServerMessage {
+  InteractionUpdate interaction_update = 1;
+  ExecServerMessage exec_server_message = 2;
+  ConversationStateStructure conversation_checkpoint_update = 3;
+  KvServerMessage kv_server_message = 4;
+  ExecServerControlMessage exec_server_control_message = 5;
+}
+
+message InteractionUpdate {
+  TextDeltaUpdate text_delta = 1;
+  ToolCallStartedUpdate tool_call_started = 2;
+  ToolCallCompletedUpdate tool_call_completed = 3;
+  ThinkingDeltaUpdate thinking_delta = 4;
+  ThinkingCompletedUpdate thinking_completed = 5;
+  UserMessageAppendedUpdate user_message_appended = 6;
+  PartialToolCallUpdate partial_tool_call = 7;
+  TokenDeltaUpdate token_delta = 8;
+  SummaryUpdate summary = 9;
+  SummaryStartedUpdate summary_started = 10;
+  SummaryCompletedUpdate summary_completed = 11;
+  ShellOutputDeltaUpdate shell_output_delta = 12;
+  HeartbeatUpdate heartbeat = 13;
+  TurnEndedUpdate turn_ended = 14;
+  ToolCallDeltaUpdate tool_call_delta = 15;
+  StepStartedUpdate step_started = 16;
+}
+
+message ExecServerMessage {
+  string id = 1;
+  string shell_args_id = 2;
+  bool write_args_bool = 3;
+  DeleteArgs delete_args = 4;
+  GrepArgs grep_args = 5;
+  ReadArgs read_args = 7;
+  LsArgs ls_args = 8;
+  DiagnosticsArgs diagnostics_args = 9;
+  RequestContextArgs request_context_args = 10;
+  McpArgs mcp_args = 11;
+  ShellArgs shell_stream_args = 14;
+  string exec_id = 15;
+  BackgroundShellSpawnArgs background_shell_spawn_args = 16;
+  ContextHeader context_header = 19;
+}
+
+message ContextHeader {
+  string id = 1;
+  string field_2 = 2;
+  int32 field_3 = 3;
+}
+
+message ExecServerControlMessage {
+  ExecServerAbort abort = 1;
+}
+
+message KvServerMessage {
+  int64 id = 1;
+  GetBlobArgs get_blob_args = 2;
+  SetBlobArgs set_blob_args = 3;
+}
+
+message ConversationStateStructure {
+  repeated string root_prompt_messages_json = 1;
+  repeated string turns_old = 2;
+  repeated string todos = 3;
+  repeated string pending_tool_calls = 4;
+  ConversationTokenDetails token_details = 5;
+  string summary = 6;
+  string plan = 7;
+  repeated string turns = 8;
+}
+
+// --- Placeholder Messages ---
+
+message ConversationTokenDetails {
+    int64 used_tokens = 1;
+    int64 max_tokens = 2;
+}
+message ModelDetails {
+  string model_name = 1;
+}
+message McpTools {}
+message ShellResult {}
+message WriteResult {}
+message DeleteResult {}
+message GrepResult {}
+message ReadResult {}
+message LsResult {}
+message DiagnosticsResult {}
+message McpResult {}
+message ShellStream {}
+message BackgroundShellSpawnResult {}
+message ExecClientStreamClose {}
+message ExecClientThrow {}
+message GetBlobResult {}
+message SetBlobResult {}
+message UserMessageAction {
+  UserMessage user_message = 1;
+}
+message ResumeAction {}
+message CancelAction {}
+message SummarizeAction {}
+message ShellCommandAction {}
+message StartPlanAction {}
+message ExecutePlanAction {}
+message TextDeltaUpdate {
+    string text = 1;
+}
+message ToolCallStartedUpdate {}
+message ToolCallCompletedUpdate {}
+message ThinkingDeltaUpdate {}
+message ThinkingCompletedUpdate {
+    int32 thinking_duration_ms = 1;
+}
+message UserMessageAppendedUpdate {
+    UserMessage user_message = 1;
+}
+message UserMessage {
+    string text = 1;
+}
+message PartialToolCallUpdate {}
+message TokenDeltaUpdate {
+    int32 tokens = 1;
+}
+message SummaryUpdate {}
+message SummaryStartedUpdate {}
+message SummaryCompletedUpdate {}
+message ShellOutputDeltaUpdate {}
+message HeartbeatUpdate {}
+message TurnEndedUpdate {}
+message ToolCallDeltaUpdate {}
+message StepStartedUpdate {}
+message ShellArgs {}
+message WriteArgs {}
+message DeleteArgs {}
+message GrepArgs {}
+message ReadArgs {}
+message LsArgs {}
+message DiagnosticsArgs {}
+message RequestContextArgs {}
+message McpArgs {}
+message BackgroundShellSpawnArgs {}
+message ExecServerAbort {}
+message GetBlobArgs {}
+message SetBlobArgs {
+  bytes blob_id = 1;
+  bytes blob_data = 2;
+}

@@ -1,25 +1,46 @@
-# ts-hello-world
+# Experiments with new Cursor Service
 
-Simple hello world project for running TypeScript with Node.js
+## Token Generation
 
-##
+The `CURSOR_API_KEY` cannot be used directly for gRPC calls. It must be exchanged for a JWT `accessToken`.
 
-```bash
-export CURSOR_API_KEY=your_api_key_for_cursor
-```
-
-## Build in local
+### Using Curl
 
 ```bash
-npm install -g typescript
-npm install
-npm test
-npm run tsc 
-node out/helloworld.js
-node out/hello-agent.js
+# Export your API key
+export CURSOR_API_KEY="your_api_key_here"
+
+# Exchange API key for JWT
+curl -X POST https://api2.cursor.sh/auth/exchange_user_api_key \
+  -H "Authorization: Bearer $CURSOR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{}"
 ```
 
-## References
+The response JSON contains `accessToken` which should be used in the `authorization` header for gRPC calls.
 
-- https://www.notion.so/cursorai/Cursor-SDK-Alpha-Docs-External-294da74ef04580f592e2d4063dc027e1
-- https://www.npmjs.com/package/@cursor-ai/january
+## TypeScript Diagnostic Tool (`hello-agent.ts`)
+
+The `hello-agent.ts` script has been evolved to:
+1.  **Intercept Requests:** Patches `@cursor-ai/january` to log gRPC requests headers to `proto/network.log`.
+2.  **Verify gRPC Support:** Patches the transport creation to use `createGrpcTransport`, confirming that `api2.cursor.sh` supports standard gRPC over HTTP/2.
+3.  **Inspect Response:** Uses reflection to inspect the structure of received messages.
+
+To run:
+```bash
+export CURSOR_API_KEY="your_key"
+npx tsx hello-agent.ts
+```
+
+## Java Implementation (`maven-demo`)
+
+The Java implementation demonstrates:
+1.  Dynamic API Key exchange.
+2.  Standard gRPC connection setup using `io.grpc`.
+
+To run:
+```bash
+export CURSOR_API_KEY="your_key"
+cd maven-demo
+./mvnw clean compile exec:java
+```
