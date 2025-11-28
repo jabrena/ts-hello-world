@@ -1,2 +1,11 @@
+.DS_Store
+target/
+.idea/
+.vscode/
+.cursor/
+.flattened-pom.xml
+*.log
+.classpath
+.env
 out
-node_modules
+node_modules/

@@ -12,6 +12,9 @@ ARG JAVA_VERSION=25.0.1-graalce
 RUN sudo mkdir /home/$USER/.m2 /home/$USER/.gradle && sudo chown $USER:$USER /home/$USER/.m2 /home/$USER/.gradle
 RUN bash -lc '. /usr/local/sdkman/bin/sdkman-init.sh && sdk install java $JAVA_VERSION && sdk use java $JAVA_VERSION'
 
+# Install ripgrep (required by @cursor-ai/january package)
+RUN sudo apt-get update && sudo apt-get install -y ripgrep && sudo rm -rf /var/lib/apt/lists/*
+
 # Install cursor-agent for the vscode user
 USER $USER
 RUN set -e && \
