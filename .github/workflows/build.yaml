@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [ '*' ]  # Trigger on all branches
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [ '*' ]  # Also trigger on PRs
 
 jobs:
   build:
