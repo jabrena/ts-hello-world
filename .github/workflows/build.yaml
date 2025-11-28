@@ -41,6 +41,9 @@ jobs:
     - name: Run hello-world example
       run: node out/hello-world.js
     
+    - name: Install ripgrep
+      run: sudo apt-get update && sudo apt-get install -y ripgrep
+    
     - name: Run hello-agent example
       env:
         CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
