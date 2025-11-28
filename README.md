@@ -2,6 +2,12 @@
 
 Simple hello world project for running TypeScript with Node.js
 
+##
+
+```bash
+export CURSOR_API_KEY=your_api_key_for_cursor
+```
+
 ## Build in local
 
 ```bash
@@ -10,6 +16,7 @@ npm install
 npm test
 npm run tsc 
 node out/helloworld.js
+node out/hello-agent.js
 ```
 
 ## References
