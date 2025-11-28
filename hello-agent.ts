@@ -136,7 +136,7 @@ async function consumeStream(stream: AgentResponseStream): Promise<void> {
 					console.log(`[user] ${update.userMessage.text}`);
 					break;
 				case "thinking-delta":
-					process.stdout.write("[thinking] " + update.text);
+					//process.stdout.write("[thinking] " + update.text);
 					break;
 				case "thinking-completed":
 					console.log(
@@ -172,7 +172,7 @@ async function consumeStream(stream: AgentResponseStream): Promise<void> {
 					console.log("\n[summary completed]");
 					break;
 				case "token-delta":
-					console.log(`[tokens +${update.tokens}]`);
+					//console.log(`[tokens +${update.tokens}]`);
 					break;
 				case "shell-output-delta":
 					console.log(`[shell] ${JSON.stringify(update.event)}`);
@@ -188,14 +188,14 @@ async function consumeStream(stream: AgentResponseStream): Promise<void> {
 async function main() {
 	console.log("🎉 Testing published @cursor-ai/january package\n");
 
-	const prompt = process.argv[2] ?? "Say hi";
-	const model = process.env.AGENT_MODEL ?? "claude-4-sonnet"; //"default"
+	const prompt = "Can you say the days of the week?";//process.argv[2] ?? "Say hi";
+	const model = process.env["AGENT_MODEL"] ?? "default"; //"claude-4-sonnet"; //"default"
 
 	const backend =
-		process.env.CURSOR_BACKEND_URL ?? "(default) https://app.cursor.sh";
+		process.env["CURSOR_BACKEND_URL"] ?? "(default) https://app.cursor.sh";
 	console.log(`[demo] Backend: ${backend}`);
 
-	const apiKey = process.env.CURSOR_API_KEY;
+	const apiKey = process.env["CURSOR_API_KEY"];
 	if (!apiKey) {
 		console.error(
 			"Missing CURSOR_API_KEY. Export CURSOR_API_KEY to run this demo."

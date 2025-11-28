@@ -33,5 +33,5 @@
     "skipLibCheck": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "out", "hello-agent.ts"]
+  "exclude": ["node_modules", "out"]
 }

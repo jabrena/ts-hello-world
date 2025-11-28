@@ -40,3 +40,8 @@ jobs:
     
     - name: Run hello-world example
       run: node out/hello-world.js
+    
+    - name: Run hello-agent example
+      env:
+        CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+      run: npm run test
